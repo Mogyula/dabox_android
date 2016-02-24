@@ -1,5 +1,6 @@
 package com.dabox.dabox;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,6 +9,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import android.R.layout;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,15 +24,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ListView listView = (ListView) findViewById(R.id.listView);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        String[] planets = new String[] { "Mercury", "Venus", "Earth", "Mars",
+                "Jupiter", "Saturn", "Uranus", "Neptune"};
+
+        ArrayList<String> list = new ArrayList<String>();
+        list.addAll(Arrays.asList(planets));
+
+        ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(this, layout.simple_list_item_1, list);
+
+        listView.setAdapter(listAdapter);
     }
 
     @Override
@@ -48,5 +57,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void openDialog(View view){
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog);
+        dialog.setTitle("New trigger");
+        dialog.show();
     }
 }

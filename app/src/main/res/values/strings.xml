@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">DaBox</string>
     <string name="action_settings">Settings</string>
+    <string name="logo_string">daBox</string>
+    <string name="channel">Channel:</string>
+    <string name="trigger_name">Trigger name:</string>
+    <string name="description">Description:</string>
+    <string name="add_trigger">Add Trigger</string>
 </resources>
