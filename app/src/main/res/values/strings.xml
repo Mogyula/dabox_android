@@ -6,4 +6,8 @@
     <string name="trigger_name">Trigger name:</string>
     <string name="description">Description:</string>
     <string name="add_trigger">Add Trigger</string>
+    <string name="error">Error</string>
+    <string name="ok_button">Okay</string>
+    <string name="load_error">Could not load saved triggers.</string>
+    <string name="save_error">Could not save triggers.</string>
 </resources>
