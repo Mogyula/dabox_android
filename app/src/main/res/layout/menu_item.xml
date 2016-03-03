@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="75dp">
+
+    <TextView
+        android:id="@+id/channelField"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:text="99"
+        android:layout_margin="10dp"
+        android:textSize="50dp"
+        />
+
+    <View style="@style/Divider"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="left"
+        android:layout_margin="10dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/nameField"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="ASDASD"
+            android:textSize="30dp"
+            />
+
+        <TextView
+            android:id="@+id/descriptionField"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:text="asd"
+            />
+
+    </LinearLayout>
+
+    <View style="@style/Divider"/>
+
+    <ImageButton
+        android:id="@+id/clearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/clear_button"
+        android:background="?android:selectableItemBackground"
+        android:layout_margin="10dp"
+        />
+
+</LinearLayout>

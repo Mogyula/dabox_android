@@ -9,34 +9,34 @@ import android.widget.ListView;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 /**
  * Created by Gyula on 2016. 02. 25..
  */
 public class TriggerContainer extends ListView {
-    HashMap<Integer, Trigger> triggers;
-    Context context;
+    private LinkedHashMap<Integer, Trigger> triggers;
+    private Context context;
+
 
     public TriggerContainer(Context context, AttributeSet attrs){
         super(context, attrs);
-        this.triggers = new HashMap<Integer, Trigger>();
+        this.triggers = new LinkedHashMap<Integer, Trigger>();
         this.context = context;
     }
 
     public void addTrigger(Integer channel, String name, String description){
         this.triggers.put(channel, new Trigger(name, description));
         this.saveToPhone();
+        this.updateListView();
     }
 
     public void removeTrigger(Integer channel){
         this.triggers.remove(channel);
         this.saveToPhone();
+        this.updateListView();
     }
 
     public Boolean exists(Integer channel){
@@ -63,13 +63,17 @@ public class TriggerContainer extends ListView {
         try {
             FileInputStream fis = this.context.openFileInput(getResources().getText(R.string.triggers_file).toString());
             ObjectInputStream ois = new ObjectInputStream(fis);
-            this.triggers = (HashMap<Integer, Trigger>)ois.readObject();
+            this.triggers = (LinkedHashMap<Integer, Trigger>)ois.readObject();
             ois.close();
             fis.close();
         }catch (Exception e){
             Log.e("loadFromPhone()", e.toString());
             showError(getResources().getText(R.string.load_error).toString());
         }
+    }
+
+    private void updateListView(){
+
     }
 
     private void showError(String message){
