@@ -11,19 +11,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.LinkedHashMap;
+import java.util.TreeMap;
 
-/**
- * Created by Gyula on 2016. 02. 25..
- */
 public class TriggerContainer extends ListView {
-    private LinkedHashMap<Integer, Trigger> triggers;
+    private TreeMap<Integer, Trigger> triggers;
     private Context context;
-
 
     public TriggerContainer(Context context, AttributeSet attrs){
         super(context, attrs);
-        this.triggers = new LinkedHashMap<Integer, Trigger>();
+        this.triggers = new TreeMap<Integer, Trigger>();
         this.context = context;
     }
 
@@ -63,7 +59,7 @@ public class TriggerContainer extends ListView {
         try {
             FileInputStream fis = this.context.openFileInput(getResources().getText(R.string.triggers_file).toString());
             ObjectInputStream ois = new ObjectInputStream(fis);
-            this.triggers = (LinkedHashMap<Integer, Trigger>)ois.readObject();
+            this.triggers = (TreeMap<Integer, Trigger>)ois.readObject();
             ois.close();
             fis.close();
         }catch (Exception e){
@@ -73,7 +69,8 @@ public class TriggerContainer extends ListView {
     }
 
     private void updateListView(){
-
+        TreeMapAdapter adapter = new TreeMapAdapter(this.triggers);
+        this.setAdapter(adapter);
     }
 
     private void showError(String message){

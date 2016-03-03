@@ -6,11 +6,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.TreeMap;
 
-public class HashMapAdapter extends BaseAdapter {
-    private final LinkedHashMap<Integer, Trigger> map;
+public class TreeMapAdapter extends BaseAdapter {
+    private final TreeMap<Integer, Trigger> map;
+
+    public TreeMapAdapter(TreeMap<Integer, Trigger> map){
+        super();
+        this.map=map;
+    }
 
     @Override
     public int getCount() {
@@ -19,13 +24,13 @@ public class HashMapAdapter extends BaseAdapter {
 
     @Override
     public Trigger getItem(int position) {
-        return (Trigger)map.values().toArray()[position-1];
+        return (Trigger)map.values().toArray()[position];
     }
 
     @Override
     public long getItemId(int position) {
         //i don't understand the purpose of this method...
-        return map.get(position).name;
+        return 0;//map.get(position).name;
     }
 
     @Override

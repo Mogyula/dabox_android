@@ -21,17 +21,6 @@ public class MainActivity extends AppCompatActivity {
         //ListView listView = (ListView) findViewById(R.id.listView);
         triggerContainer = (TriggerContainer) findViewById(R.id.triggerContainer);
 
-        /*
-        String[] planets = new String[] { "Mercury", "Venus", "Earth", "Mars",
-                "Jupiter", "Saturn", "Uranus", "Neptune"};
-
-        ArrayList<String> list = new ArrayList<String>();
-        list.addAll(Arrays.asList(planets));
-
-        ArrayAdapter<String> listAdapter = new ArrayAdapter<String>(this, layout.simple_list_item_1, list);
-
-        listView.setAdapter(listAdapter);
-        */
     }
 
     @Override

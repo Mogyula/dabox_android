@@ -60,6 +60,7 @@
 
         <EditText
             android:layout_width="0dp"
+            android:maxLength="2"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:inputType="number"
