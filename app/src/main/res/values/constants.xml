@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="triggers_file">triggersFile</string>
+    <integer name="device_id">2</integer>
+    <integer name="listen_timeout">10000</integer>
+    <integer name="inbound_port">22000</integer>
 </resources>

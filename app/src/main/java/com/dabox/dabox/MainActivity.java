@@ -1,9 +1,11 @@
 package com.dabox.dabox;
 
 import android.app.Dialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,7 +58,16 @@ public class MainActivity extends AppCompatActivity {
         String name = ((EditText)((View)view.getParent()).findViewById(R.id.editName)).getText().toString();
         String description = ((EditText)((View)view.getParent()).findViewById(R.id.editDescription)).getText().toString();
         Integer channel = Integer.parseInt(((EditText) ((View) view.getParent()).findViewById(R.id.editChannel)).getText().toString());
-        this.triggerContainer.addTrigger(channel,name,description);
+        this.triggerContainer.addTrigger(channel, name, description);
+    }
+
+    public void sendSocket(View view){
+        try {
+            daBoxConnection conn = new daBoxConnection("192.168.0.157", 22000, 13, getApplicationContext());
+            conn.start();
+        }catch (Exception e){
+            Log.e("sendSocket()", e.toString());
+        }
     }
 }
 
