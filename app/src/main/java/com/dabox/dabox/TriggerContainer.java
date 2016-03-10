@@ -21,6 +21,7 @@ public class TriggerContainer extends ListView {
         super(context, attrs);
         this.triggers = new TreeMap<Integer, Trigger>();
         this.context = context;
+        loadFromPhone();
     }
 
     public void addTrigger(Integer channel, String name, String description){
@@ -62,6 +63,7 @@ public class TriggerContainer extends ListView {
             this.triggers = (TreeMap<Integer, Trigger>)ois.readObject();
             ois.close();
             fis.close();
+            updateListView();
         }catch (Exception e){
             Log.e("loadFromPhone()", e.toString());
             showError(getResources().getText(R.string.load_error).toString());
