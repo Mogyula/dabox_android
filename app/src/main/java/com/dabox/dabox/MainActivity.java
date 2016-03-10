@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void openDialog(View view){
+    public void openDialog(View view) {
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog);
         dialog.setTitle("New trigger");
