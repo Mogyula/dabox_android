@@ -6,8 +6,8 @@
     android:layout_height="75dp">
 
     <TextView
-        android:gravity="center_horizontal"
         android:id="@+id/channelField"
+        android:gravity="center_horizontal"
         android:layout_height="match_parent"
         android:layout_width="45dp"
         android:text="99"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="ASDASD"
-            android:textSize="30dp"
+            android:textSize="25dp"
             />
 
         <TextView
@@ -46,12 +46,12 @@
     <View style="@style/Divider"/>
 
     <ImageButton
+        android:onClick="removeTrigger"
         android:id="@+id/clearButton"
         android:layout_width="44dp"
         android:layout_height="match_parent"
         android:src="@drawable/clear_button"
         android:background="?android:selectableItemBackground"
-
         />
 
 </LinearLayout>

@@ -2,7 +2,6 @@ package com.dabox.dabox;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,6 +10,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private TriggerContainer triggerContainer;
@@ -28,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
         //start the listener thread
         Intent listenerServiceIntent = new Intent(getBaseContext(), ListenerService.class);
         listenerServiceIntent.putExtra("outPort",this.getResources().getInteger(R.integer.inbound_port));
-        listenerServiceIntent.putExtra("timeOut",this.getResources().getInteger(R.integer.listen_timeout)); //// TODO: 2016. 03. 10. this shouldn't be 0. 
+        listenerServiceIntent.putExtra("timeOut",this.getResources().getInteger(R.integer.listen_timeout)); //// TODO: 2016. 03. 10. this shouldn't be 0.
+
         startService(listenerServiceIntent);
 
     }
@@ -76,6 +78,12 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             Log.e("sendSocket()", e.toString());
         }
+    }
+
+    public void removeTrigger(View view){
+        triggerContainer.removeTrigger(
+                Integer.parseInt(((TextView) (((LinearLayout) view.getParent()).findViewById(R.id.channelField))).getText().toString())
+        );
     }
 }
 
