@@ -1,6 +1,7 @@
 package com.dabox.dabox;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,11 +18,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //ListView listView = (ListView) findViewById(R.id.listView);
         triggerContainer = (TriggerContainer) findViewById(R.id.triggerContainer);
+
+        //start the listener thread
+        Intent listenerServiceIntent = new Intent(getBaseContext(), ListenerService.class);
+        listenerServiceIntent.putExtra("outPort",this.getResources().getInteger(R.integer.inbound_port));
+        listenerServiceIntent.putExtra("timeOut",this.getResources().getInteger(R.integer.listen_timeout)); //// TODO: 2016. 03. 10. this shouldn't be 0. 
+        startService(listenerServiceIntent);
 
     }
 

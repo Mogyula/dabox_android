@@ -1,11 +1,14 @@
 package com.dabox.dabox;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.Socket;
 
@@ -17,6 +20,7 @@ public class ListenerThread implements Runnable{
 
     public ListenerThread(Socket socket){
         this.socket=socket;
+        this.readBytes= new byte[16];
     }
 
     @Override
@@ -25,7 +29,7 @@ public class ListenerThread implements Runnable{
         DataOutputStream dataOutputStream;
         try {
             dataInputStream = new DataInputStream(socket.getInputStream());
-            while(-1 != dataInputStream.read(readBytes));
+            dataInputStream.read(readBytes);
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             dataOutputStream.write(doProcessing(readBytes));
             socket.close();
@@ -35,11 +39,20 @@ public class ListenerThread implements Runnable{
     }
 
     public void start(){
-        thread = new Thread();
+        thread = new Thread(this);
         thread.start();
     }
 
     private byte[] doProcessing(byte[] data){
+        return "Hallo, was kostet die Garage?".getBytes();
+        /*
+        try {
+            Log.e("AAAAAAAAAAAAAAAAAAA", new String(data, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+
         // TODO: 2016. 03. 06. extract first byte
         byte firstByte = data[0];
         switch (firstByte){
@@ -47,7 +60,7 @@ public class ListenerThread implements Runnable{
                 return msgSendId();
             // TODO: 2016. 03. 06. implement everything...
         }
-        return null;
+        */
     }
 
     private byte[] msgSendId(){

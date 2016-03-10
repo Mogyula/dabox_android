@@ -3,15 +3,15 @@ package com.dabox.dabox;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 
 public class ListenerService extends Service{
     private Thread thread;
-    private Integer port;
     private ListenerMainThread listenerMainThread;
 
-    public ListenerService(Integer port){
-        this.port=port;
+    public ListenerService(){
+        super();
     }
 
     public IBinder onBind(Intent arg){
@@ -20,7 +20,9 @@ public class ListenerService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        listenerMainThread = new ListenerMainThread(R.integer.inbound_port);
+        int port = intent.getIntExtra("outPort", 22000);
+        int timeOut = intent.getIntExtra("timeOut", 10000);
+        listenerMainThread = new ListenerMainThread(port, timeOut);
         thread = new Thread(listenerMainThread);
         thread.start();
         super.onStartCommand(intent,flags,startId);
