@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.TextureView;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -68,9 +70,12 @@ public class MainActivity extends AppCompatActivity {
     public void addTrigger(View view){
         String name = ((EditText)((View)view.getParent()).findViewById(R.id.editName)).getText().toString();
         String description = ((EditText)((View)view.getParent()).findViewById(R.id.editDescription)).getText().toString();
-        Integer channel = Integer.parseInt(((EditText) ((View) view.getParent()).findViewById(R.id.editChannel)).getText().toString());
-        this.triggerContainer.addTrigger(channel, name, description);
-        dialog.dismiss();
+        String channel = ((EditText) ((View) view.getParent()).findViewById(R.id.editChannel)).getText().toString();
+
+        if(!name.matches("") && !description.matches("") && !channel.matches("")) {
+            this.triggerContainer.addTrigger(Integer.parseInt(channel), name, description);
+            dialog.dismiss();
+        }
     }
 
     public void sendSocket(View view){
