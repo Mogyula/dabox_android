@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private TriggerContainer triggerContainer;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openDialog(View view){
-        final Dialog dialog = new Dialog(this);
+        dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog);
         dialog.setTitle("New trigger");
         dialog.show();
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         String description = ((EditText)((View)view.getParent()).findViewById(R.id.editDescription)).getText().toString();
         Integer channel = Integer.parseInt(((EditText) ((View) view.getParent()).findViewById(R.id.editChannel)).getText().toString());
         this.triggerContainer.addTrigger(channel, name, description);
+        dialog.dismiss();
     }
 
     public void sendSocket(View view){
