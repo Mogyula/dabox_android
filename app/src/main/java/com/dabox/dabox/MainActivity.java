@@ -1,13 +1,12 @@
 package com.dabox.dabox;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.TextureView;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    private TriggerContainer triggerContainer;
+    private static Activity activity;
+    private static TriggerContainer triggerContainer;
     private Dialog dialog;
 
     @Override
@@ -29,12 +29,7 @@ public class MainActivity extends AppCompatActivity {
         //ListView listView = (ListView) findViewById(R.id.listView);
         triggerContainer = (TriggerContainer) findViewById(R.id.triggerContainer);
 
-        //start the listener thread
-        Intent listenerServiceIntent = new Intent(getBaseContext(), ListenerService.class);
-        listenerServiceIntent.putExtra("outPort",this.getResources().getInteger(R.integer.inbound_port));
-        listenerServiceIntent.putExtra("timeOut",this.getResources().getInteger(R.integer.listen_timeout)); //// TODO: 2016. 03. 10. this shouldn't be 0.
-
-        startService(listenerServiceIntent);
+        startService(new Intent(getBaseContext(), ListenerService.class));
 
     }
 
@@ -60,6 +55,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static TriggerContainer getTriggerContainer(){
+        return MainActivity.triggerContainer;
+    }
+
+    public static Activity getMainActivity(){
+        return MainActivity.activity;
+    }
+
     public void openDialog(View view){
         dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog);
@@ -79,8 +82,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendSocket(View view){
+        Integer channel = Integer.parseInt(((TextView)((View)view.getParent()).findViewById(R.id.channelField)).getText().toString());
         try {
-            daBoxConnection conn = new daBoxConnection("192.168.0.157", 22000, 13, getApplicationContext());
+            daBoxConnection conn = new daBoxConnection(
+                    this.getResources().getString(R.string.dabox_address),
+                    this.getResources().getInteger(R.integer.inbound_port),
+                    channel,
+                    getApplicationContext());
             conn.start();
         }catch (Exception e){
             Log.e("sendSocket()", e.toString());

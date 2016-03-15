@@ -3,8 +3,6 @@ package com.dabox.dabox;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
-import android.view.View;
 
 public class ListenerService extends Service{
     private Thread thread;
@@ -20,11 +18,13 @@ public class ListenerService extends Service{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
-        int port = intent.getIntExtra("outPort", 22000);
-        int timeOut = intent.getIntExtra("timeOut", 10000);
+        int port = MainActivity.getMainActivity().getResources().getInteger(R.integer.inbound_port);
+        int timeOut = MainActivity.getMainActivity().getResources().getInteger(R.integer.listen_timeout);
+
         listenerMainThread = new ListenerMainThread(port, timeOut);
         thread = new Thread(listenerMainThread);
         thread.start();
+
         super.onStartCommand(intent,flags,startId);
 
         return START_STICKY;

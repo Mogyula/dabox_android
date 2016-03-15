@@ -25,7 +25,7 @@ public class TriggerContainer extends ListView {
     }
 
     public void addTrigger(Integer channel, String name, String description){
-        this.triggers.put(channel, new Trigger(name, description));
+        this.triggers.put(channel, new Trigger(name, description, false));
         this.saveToPhone();
         this.updateListView();
     }
@@ -34,6 +34,18 @@ public class TriggerContainer extends ListView {
         this.triggers.remove(channel);
         this.saveToPhone();
         this.updateListView();
+    }
+
+    public void activateTrigger(Integer channel){
+        if(exists(channel)){ //doesn't matter if it doesn't exist.
+            triggers.get(channel).state = true;
+        }
+    }
+
+    public void deactivateAll(){
+        for(Integer i : triggers.keySet()){
+            triggers.get(i).state=false;
+        }
     }
 
     public Boolean exists(Integer channel){

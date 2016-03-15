@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.math.BigInteger;
 import java.net.Socket;
 
 public class daBoxConnection implements Runnable{
@@ -30,8 +31,8 @@ public class daBoxConnection implements Runnable{
             this.socket = new Socket(this.serverName, this.serverPort);
             this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
             this.dataInputStream = new DataInputStream(socket.getInputStream());
-            String outMessage = "android";
-            dataOutputStream.writeUTF(outMessage);
+            byte[] outMessage = BigInteger.valueOf(12).shiftLeft(15*8).toByteArray();
+            dataOutputStream.write(outMessage);
         }catch(Exception e){
             Log.e("sendMessage()", e.toString());
         }

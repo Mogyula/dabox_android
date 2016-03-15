@@ -1,22 +1,28 @@
 package com.dabox.dabox;
 
-import android.util.Log;
-
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ListenerMainThread implements Runnable{
+public class ListenerMainThread implements Runnable {
     private boolean shouldContinue;
     private int port;
     private int timeOut;
+    private static Long macAdress;
 
-    public ListenerMainThread(){
+    public ListenerMainThread(int port, int timeOut,) {
+        this.port = port;
+        this.timeOut = timeOut;
 
-    }
+        try {
+            setMACAddress();
+        }catch (IOException e){
+            e.printStackTrace();
+        } // TODO: 2016. 03. 15. handle exceptions
 
-    public ListenerMainThread(int port, int timeOut){
-        this.port=port;
-        this.timeOut=timeOut;
     }
 
     @Override
@@ -34,7 +40,23 @@ public class ListenerMainThread implements Runnable{
         }
     }
 
-    public void stop(){
-        shouldContinue=false;
+    public void stop() {
+        shouldContinue = false;
+    }
+
+    private void setMACAddress() throws IOException {
+        FileReader fileReader;
+        File file = new File("/sys/class/net/eth0/address");
+        if (file.exists()) {
+            fileReader = new FileReader("/sys/class/net/eth0/address");
+        } else {
+            fileReader = new FileReader("/sys/class/net/wlan0/address");
+        }
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        ListenerMainThread.macAdress = Long.parseLong(bufferedReader.readLine().replace(":", "")); //it's gonna be on the first line anyways.
+    }
+
+    public static Long getMACAddress(){
+        return ListenerMainThread.macAdress;
     }
 }

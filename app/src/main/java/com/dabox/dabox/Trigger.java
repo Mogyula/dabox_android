@@ -7,10 +7,13 @@ public class Trigger implements Serializable {
 
     public final String name;
     public final String description;
+    public boolean state;
 
-    Trigger(String name, String description){
+    Trigger(String name, String description, boolean state){
         this.name = name;
         this.description = description;
+        this.state = state;
+
     }
 
 }

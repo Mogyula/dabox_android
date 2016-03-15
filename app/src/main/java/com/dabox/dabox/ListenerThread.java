@@ -1,6 +1,5 @@
 package com.dabox.dabox;
 
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -8,7 +7,6 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.Socket;
 
@@ -44,51 +42,74 @@ public class ListenerThread implements Runnable{
     }
 
     private byte[] doProcessing(byte[] data){
-        return "Hallo, was kostet die Garage?".getBytes();
-        /*
-        try {
-            Log.e("AAAAAAAAAAAAAAAAAAA", new String(data, "UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
-
-        // TODO: 2016. 03. 06. extract first byte
         byte firstByte = data[0];
+
         switch (firstByte){
             case 1:
-                return msgSendId();
-            // TODO: 2016. 03. 06. implement everything...
+                return sendId();
+            case 3:
+                return initSetupMode();
+            case 4:
+                return startExec();
+            case 5:
+                return setArg(data);
+            case 6:
+                return activateTrigger(data);
+            case 11:
+                return handleTrigger(data);
         }
-        */
+        return BigInteger.valueOf(15).shiftLeft(15 * 8).toByteArray();
     }
 
-    private byte[] msgSendId(){
-        BigInteger result;
-        String MACString;
-        try {
-            MACString = getMACAddress();
-        }catch (IOException e){
-            e.printStackTrace();
-            return null;
-        }
+    private byte[] activateTrigger(byte[] data){
+        Long MACAddress = ListenerMainThread.getMACAddress();
+
+        Long triggerID = new BigInteger(1, data)
+                .shiftRight(11*8)
+                .and(BigInteger.valueOf(0xFFFFFFFF))
+                .longValue();
+
+        MainActivity.getTriggerContainer().activateTrigger(triggerID);
+
+        return BigInteger.valueOf(10).shiftLeft(15*8)
+                .add(BigInteger.valueOf(MACAddress).shiftLeft(7 * 8))
+                .add(BigInteger.valueOf(triggerID).shiftLeft(3 * 8))
+                .toByteArray();
+    }
+
+    private byte[] handleTrigger(byte[] data){
+        return BigInteger.valueOf(15).shiftLeft(15*8).toByteArray();
+        //// TODO: 2016. 03. 15. implement triggers maybe?
+    }
+
+    private byte[] setArg(byte[] data){
+        return BigInteger.valueOf(15).shiftLeft(15 * 8).toByteArray();
+        //// TODO: 2016. 03. 15. implement arguments maybe?
+    }
+
+    private byte[] startExec(){
+        Long MACAddress = ListenerMainThread.getMACAddress();
+
+        return BigInteger.valueOf(MACAddress).shiftLeft(7 * 8)
+                .add(BigInteger.valueOf(8).shiftLeft(15*8)).toByteArray();
+    }
+
+    private byte[] initSetupMode(){
+        Long MACAddress = ListenerMainThread.getMACAddress();
+
+        MainActivity.getTriggerContainer().deactivateAll();
+
+        return BigInteger.valueOf(MACAddress).shiftLeft(7 * 8)
+                .add(BigInteger.valueOf(7).shiftLeft(15*8)).toByteArray();
+    }
+
+    private byte[] sendId(){
+        Long MACAddress = ListenerMainThread.getMACAddress();
+
         //here we'll convert that string to byte array
-        MACString = MACString.replace(":", "");
-        result = BigInteger.valueOf(Long.parseLong(MACString, 16)).shiftLeft(7*8)
-            .add(BigInteger.valueOf(2).shiftLeft(15*8))
-            .add(BigInteger.valueOf(R.integer.device_id).shiftLeft(3*8));
-        return result.toByteArray();
-    }
-
-    private String getMACAddress() throws IOException {
-        FileReader fileReader;
-        File file = new File("/sys/class/net/eth0/address");
-        if (file.exists()){
-            fileReader = new FileReader("/sys/class/net/eth0/address");
-        }else{
-            fileReader = new FileReader("/sys/class/net/wlan0/address");
-        }
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        return bufferedReader.readLine(); //it's gonna be on the first line anyways.
+        return BigInteger.valueOf(MACAddress).shiftLeft(7 * 8)
+                .add(BigInteger.valueOf(2).shiftLeft(15 * 8))
+                .add(BigInteger.valueOf(R.integer.device_id).shiftLeft(3 * 8))
+                .toByteArray(); // TODO: 2016. 03. 12. get device_id correctly
     }
 }
