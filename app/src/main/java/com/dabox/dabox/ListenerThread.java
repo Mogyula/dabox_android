@@ -64,10 +64,10 @@ public class ListenerThread implements Runnable{
     private byte[] activateTrigger(byte[] data){
         Long MACAddress = ListenerMainThread.getMACAddress();
 
-        Long triggerID = new BigInteger(1, data)
+        Integer triggerID = new BigInteger(1, data)
                 .shiftRight(11*8)
                 .and(BigInteger.valueOf(0xFFFFFFFF))
-                .longValue();
+                .intValue();
 
         MainActivity.getTriggerContainer().activateTrigger(triggerID);
 

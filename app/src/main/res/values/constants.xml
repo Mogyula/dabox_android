@@ -2,7 +2,9 @@
 <resources>
     <string name="triggers_file">triggersFile</string>
     <integer name="device_id">2</integer>
-    <string name="dabox_address">192.168.0.157</string>
+    <string name="dabox_address">192.168.0.198</string>
     <integer name="listen_timeout">0</integer>
-    <integer name="inbound_port">22000</integer>
+    <integer name="inbound_port">7701</integer>
+    <integer name="outbound_port">7702</integer>
+
 </resources>

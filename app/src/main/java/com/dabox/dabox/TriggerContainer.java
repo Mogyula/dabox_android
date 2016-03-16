@@ -99,4 +99,12 @@ public class TriggerContainer extends ListView {
         });
         dialogBuilder.create().show();
     }
+
+    public boolean isActive(Integer channel){
+        if(triggers.get(channel) == null){
+            return false;
+        }else{
+            return triggers.get(channel).state;
+        }
+    }
 }

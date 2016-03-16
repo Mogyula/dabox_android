@@ -11,9 +11,9 @@ public class ListenerMainThread implements Runnable {
     private boolean shouldContinue;
     private int port;
     private int timeOut;
-    private static Long macAdress;
+    private static Long macAddress;
 
-    public ListenerMainThread(int port, int timeOut,) {
+    public ListenerMainThread(int port, int timeOut) {
         this.port = port;
         this.timeOut = timeOut;
 
@@ -53,10 +53,10 @@ public class ListenerMainThread implements Runnable {
             fileReader = new FileReader("/sys/class/net/wlan0/address");
         }
         BufferedReader bufferedReader = new BufferedReader(fileReader);
-        ListenerMainThread.macAdress = Long.parseLong(bufferedReader.readLine().replace(":", "")); //it's gonna be on the first line anyways.
+        ListenerMainThread.macAddress = Long.parseLong(bufferedReader.readLine().replace(":", ""),16); //it's gonna be on the first line anyways.
     }
 
     public static Long getMACAddress(){
-        return ListenerMainThread.macAdress;
+        return ListenerMainThread.macAddress;
     }
 }

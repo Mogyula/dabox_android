@@ -10,9 +10,6 @@ import java.net.Socket;
 
 public class daBoxConnection implements Runnable{
     private Thread thread;
-    private Socket socket;
-    private DataOutputStream dataOutputStream;
-    private DataInputStream dataInputStream;
     private Integer channel;
     private String serverName;
     private Integer serverPort;
@@ -27,14 +24,32 @@ public class daBoxConnection implements Runnable{
 
     @Override
     public void run(){
-        try {
-            this.socket = new Socket(this.serverName, this.serverPort);
-            this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            this.dataInputStream = new DataInputStream(socket.getInputStream());
-            byte[] outMessage = BigInteger.valueOf(12).shiftLeft(15*8).toByteArray();
-            dataOutputStream.write(outMessage);
-        }catch(Exception e){
-            Log.e("sendMessage()", e.toString());
+        //check if the trigger has been activated, and if so, then send it
+
+        boolean dummy = MainActivity.getTriggerContainer().isActive(channel);
+
+        if (MainActivity.getTriggerContainer().isActive(channel)){
+            try {
+                Socket socket = new Socket(serverName, serverPort);
+                DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+                byte[] outMessage = BigInteger.valueOf(12).shiftLeft(15 * 8)
+                        .add(BigInteger.valueOf(channel).shiftLeft(11 * 8))
+                        .toByteArray();
+                dataOutputStream.write(outMessage);
+                byte[] readBytes = new byte[16];
+                dataInputStream.read(readBytes);
+                
+                if(readBytes[0]==15){
+                    //There was an error, handle it.
+                    //Maybe we should send it again a few times, display an error message, etc.
+                    // TODO: 2016. 03. 16. handle errors here somewhere 
+                }
+                
+                socket.close();
+            } catch (Exception e) {
+                Log.e("sendMessage()", e.toString());
+            }
         }
     }
 

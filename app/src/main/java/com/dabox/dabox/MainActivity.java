@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -83,10 +84,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendSocket(View view){
         Integer channel = Integer.parseInt(((TextView)((View)view.getParent()).findViewById(R.id.channelField)).getText().toString());
+
         try {
             daBoxConnection conn = new daBoxConnection(
                     this.getResources().getString(R.string.dabox_address),
-                    this.getResources().getInteger(R.integer.inbound_port),
+                    this.getResources().getInteger(R.integer.outbound_port),
                     channel,
                     getApplicationContext());
             conn.start();
